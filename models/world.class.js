@@ -33,9 +33,9 @@ class World {
         this.addObjectsToMap(this.enemies);
 
         // // Draw() wird immer wieder aufgerufen
-        requestAnimationFrame(() => {
-            this.draw();
-        });
+        // requestAnimationFrame(() => {
+        //     this.draw();
+        // });
     }
 
     addObjectsToMap(objects){
