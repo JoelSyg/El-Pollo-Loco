@@ -15,12 +15,15 @@ class Chicken extends MovableObject{
 
         this.x = 200 + Math.random() * 500;
         this.speed = 0.25 + Math.random() * 0.45;
+
         this.animate();
     }
 
 
     animate(){
-        this.moveLeft();
+        setInterval(() => {
+            this.moveLeft();
+        }, 1000 / 60);
 
         setInterval( () => {
             this.playAnimation(this.IMAGES_WALKING);

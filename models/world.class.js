@@ -32,9 +32,9 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
 
         // // Draw() wird immer wieder aufgerufen
-        requestAnimationFrame(() => {
-            this.draw();
-        });
+        // requestAnimationFrame(() => {
+        //     this.draw();
+        // });
     }
 
     addObjectsToMap(objects){
