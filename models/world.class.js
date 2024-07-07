@@ -24,7 +24,7 @@ class World {
         setInterval(() => {
             this.level.enemies.forEach( (enemy) => {
                if(this.character.isColliding(enemy) ) {
-                    this.character.energy -= 5;
+                    this.character.hit();
                     console.log(this.character.energy);
                }
             });
@@ -44,10 +44,11 @@ class World {
 
         this.ctx.translate(-this.camera_x, 0);
 
-        // // Draw() wird immer wieder aufgerufen
-        requestAnimationFrame(() => {
-            this.draw();
-        });
+        // // Draw() wird immer wieder aufgerufe
+        // requestAnimationFrame(() => {
+        //     this.draw();
+        // });
+
     }
 
     addObjectsToMap(objects){
