@@ -7,7 +7,8 @@ class World {
     camera_x = 0;
     healthStatusBar = new HealthStatusBar();
     bottlesStatutsbar = new BottlesStatusBar();
-    ThrowableObjects = [];
+    throwableObjects = [];
+    collectableObjects = [];
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -29,22 +30,45 @@ class World {
         }, 200);
     }
 
+    collectBottle(bottle) {
+        this.character.bottles += 1;
+        this.bottlesStatutsbar.setPercentage(this.character.bottles * 20); // Update Bottlestatusbar
+        
+        // remove bottle
+        const index = this.level.collectableObjects.indexOf(bottle);
+        if (index > -1) {
+            this.level.collectableObjects.splice(index, 1);
+        }
+    }
+
     checkCollisions() {
         this.level.enemies.forEach( (enemy) => {
             if(this.character.isColliding(enemy) ) {
                  this.character.hit();
-                 this.healthStatusBar.setPercentage(this.character.health)
+                 this.healthStatusBar.setPercentage(this.character.health);
                  console.log(this.character.health);
+            }
+         });
+
+         this.level.collectableObjects.forEach( (bottle) => {
+            if(this.character.isColliding(bottle) ) {
+                 this.collectBottle(bottle);
             }
          });
     }
 
     checkThrowObjects() {
-        if (this.keyboard.D) {
-            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
-            this.ThrowableObjects.push(bottle);
+        if (this.keyboard.D && this.character.bottles > 0) { // checks if character has min. 1 bottle
+            const direction = this.character.otherDirection ? 'left' : 'right'; 
+            let bottle = new ThrowableObject(this.character.x + (direction === 'right' ? 100 : -100), this.character.y + 100, direction);
+            this.throwableObjects.push(bottle);
+            this.character.bottles -= 1; // Removes a bottle after throwing
+            this.bottlesStatutsbar.setPercentage(this.character.bottles * 20); // Update BottlesStatusbar
         }
     }
+
+ 
+    
 
 
     draw() {
@@ -57,14 +81,15 @@ class World {
         // Space for fixed objects
         this.addToMap(this.healthStatusBar);
         this.addToMap(this.bottlesStatutsbar);
+        //
         this.ctx.translate(this.camera_x, 0);
-
 
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.clouds);
         this.addObjectsToMap(this.level.enemies);
-        this.addObjectsToMap(this.ThrowableObjects);
-        
+        this.addObjectsToMap(this.throwableObjects);
+        this.addObjectsToMap(this.level.collectableObjects);
+    
 
         this.ctx.translate(-this.camera_x, 0);
 

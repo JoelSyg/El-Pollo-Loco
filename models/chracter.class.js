@@ -1,7 +1,9 @@
-class Character extends CollidableObject {
+class Character extends MovableObject {
   height = 250;
   y = 80;
   speed = 10;
+
+  bottles = 0;
 
   offset = {
     top: 0,
