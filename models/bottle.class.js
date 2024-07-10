@@ -1,4 +1,4 @@
-class CollectableObject extends MovableObject {
+class Bottle extends MovableObject {
     
     y = 360;
     height = 60;

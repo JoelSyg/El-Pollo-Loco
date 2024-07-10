@@ -13,9 +13,9 @@ IMAGES = [
     super();
     this.loadImages(this.IMAGES);
     this.x = 20;
-    this.y = 50; 
+    this.y = 80; 
     this.width = 200;
-    this.height = 60;
+    this.height = 55;
     this.setPercentage(0);
   }
 

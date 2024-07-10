@@ -4,6 +4,7 @@ class Character extends MovableObject {
   speed = 10;
 
   bottles = 0;
+  coins = 0;
 
   offset = {
     top: 0,
