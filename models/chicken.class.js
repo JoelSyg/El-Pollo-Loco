@@ -1,4 +1,4 @@
-class Chicken extends MovableObject{
+class Chicken extends MovableObject {
     y = 360;
     height = 60;
     width = 100;
@@ -8,19 +8,21 @@ class Chicken extends MovableObject{
         bottom: 0,
         left: 0,
         right: 0
-      }
-    
+    }
+
     IMAGES_WALKING = [
         '/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
         '/img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
         '/img/3_enemies_chicken/chicken_normal/1_walk/3_w.png'
     ];
 
-    IMAGES_DEAD = [
+    IMAGE_DEAD = [
         'img/3_enemies_chicken/chicken_normal/2_dead/dead.png'
     ]
 
-    constructor(){
+    intervals = [];
+
+    constructor() {
         super().loadImage('/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.loadImages(this.IMAGES_WALKING);
 
@@ -30,15 +32,28 @@ class Chicken extends MovableObject{
         this.animate();
     }
 
-
-    animate(){
-        setInterval(() => {
+    animate() {
+        this.intervals.push(setInterval(() => {
             this.moveLeft();
-        }, 1000 / 60);
+        }, 1000 / 60));
 
-        setInterval( () => {
+        this.intervals.push(setInterval(() => {
             this.playAnimation(this.IMAGES_WALKING);
-        }, 200);
+        }, 200));
     }
 
+    stopIntervals() {
+        this.intervals.forEach(clearInterval);
+        this.intervals = [];
+    }
+
+    kill() {
+        this.stopIntervals();
+        this.speed = 0;
+        this.loadImage(this.IMAGE_DEAD[0]);
+        this.isAlive = false;
+    }
 }
+
+
+// chicken ein isDead oder so geben damit man kein schaden mehr kriegt wenn es schon liegt und es dann entfernen nach 0,5s oder so

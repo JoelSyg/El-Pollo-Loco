@@ -58,10 +58,12 @@ class World {
 
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy)) {
+            if (this.character.isColliding(enemy) & enemy.isAlive) { // Auf Kollision prüfen und prüfen ob enemy noch alive ist
                 if (this.character.isCollidingFromAbove(enemy)) {
-                    // enemy.kill();  // Feind töten
-                    console.log('kill')
+                    enemy.kill();  // enemy töten
+                    console.log('Chicken getötet');
+                    this.removeDeadEnemy(enemy); // dead enemy removen
+
                 } else {
                     this.character.hit();  // Charakter nimmt Schaden
                     this.healthStatusBar.setPercentage(this.character.health);
@@ -70,18 +72,28 @@ class World {
             }
         });
 
-        this.level.bottles.forEach( (bottle) => {
-            if(this.character.isColliding(bottle) ) {
-                 this.collectBottle(bottle);
+        this.level.bottles.forEach((bottle) => {
+            if (this.character.isColliding(bottle)) {
+                this.collectBottle(bottle);
             }
-         });
+        });
 
-         this.level.coins.forEach( (coin) => {
-            if(this.character.isColliding(coin) ) {
-                 this.collectCoin(coin);
+        this.level.coins.forEach((coin) => {
+            if (this.character.isColliding(coin)) {
+                this.collectCoin(coin);
             }
-         });
+        });
     }
+
+    removeDeadEnemy(enemy) {
+        setTimeout(() => {
+            const index = this.level.enemies.indexOf(enemy);
+            if (index > -1) {
+                this.level.enemies.splice(index, 1);
+            }
+        }, 500);
+    }
+
 
     // checkCollisions() {
     //     this.level.enemies.forEach( (enemy) => {

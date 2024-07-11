@@ -7,6 +7,7 @@ class MovableObject extends DrawableObject{
     lastHit = 0;
 
     isBoss = false;
+    isAlive = true;
 
     offset = {
         top: 0,
