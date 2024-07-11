@@ -42,10 +42,10 @@ class ChickenSmall extends MovableObject {
         }, 200));
     }
 
-    stopIntervals() {
-        this.intervals.forEach(clearInterval);
-        this.intervals = [];
-    }
+    // stopIntervals() {
+    //     this.intervals.forEach(clearInterval);
+    //     this.intervals = [];
+    // }
 
     kill() {
         this.stopIntervals();

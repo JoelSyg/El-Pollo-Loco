@@ -42,16 +42,20 @@ class Chicken extends MovableObject {
         }, 200));
     }
 
-    stopIntervals() {
-        this.intervals.forEach(clearInterval);
-        this.intervals = [];
-    }
+    // stopIntervals() {
+    //     this.intervals.forEach(clearInterval);
+    //     this.intervals = [];
+    // }
 
     kill() {
         this.stopIntervals();
         this.speed = 0;
         this.loadImage(this.IMAGE_DEAD[0]);
         this.isAlive = false;
+    }
+
+    hitByBottle() {
+        this.kill();
     }
 }
 

@@ -60,7 +60,7 @@ class World {
         this.level.enemies.forEach((enemy) => {
             if (this.character.isColliding(enemy) & enemy.isAlive) { // Auf Kollision prüfen und prüfen ob enemy noch alive ist
                 if (this.character.isCollidingFromAbove(enemy)) {
-                    enemy.kill();  // enemy töten
+                    enemy.kill(enemy);  // enemy töten
                     console.log('Chicken getötet');
                     this.removeDeadEnemy(enemy); // dead enemy removen
 
@@ -89,12 +89,25 @@ class World {
                 if (thrownBottle.isColliding(enemy)) {
                     // Handle collision
                     console.log('Bottle hit enemy');
-                    enemy.kill();
+                    enemy.hitByBottle();
+                    this.removeThrownBottle(thrownBottle);
+                    if (!enemy.isAlive) {
                     this.removeDeadEnemy(enemy);
                     // thrownBottle.explode(); // Example method to handle bottle explosion
+                    }
                 }
             });
         });
+    }
+
+
+    removeThrownBottle(thrownBottle) {
+        setTimeout(() => {
+            const index = this.throwableObjects.indexOf(thrownBottle);
+            if (index > -1) {
+                this.throwableObjects.splice(index, 1);
+            }
+        }, 5);
     }
 
     removeDeadEnemy(enemy) {

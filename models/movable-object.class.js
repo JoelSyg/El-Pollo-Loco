@@ -109,6 +109,12 @@ class MovableObject extends DrawableObject{
     jump(){
         this.speedY = 30;
     }
-    
+
+
+
+    stopIntervals() {
+        this.intervals.forEach(clearInterval);
+        this.intervals = [];
+    }
 }
 
