@@ -7,10 +7,10 @@ class Character extends MovableObject {
   coins = 0;
 
   offset = {
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0
+    top: 100,
+    bottom: 10,
+    left: 20,
+    right: 22
   }
 
   IMAGES_IDLE = [

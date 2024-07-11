@@ -5,10 +5,10 @@ class Bottle extends MovableObject {
     width = 100;
 
     offset = {
-        top: 0,
-        bottom: 0,
+        top: 8,
+        bottom: 8,
         left: 30,
-        right: 30
+        right: 20
     }
 
     BOTTLE_ON_GROUND = [

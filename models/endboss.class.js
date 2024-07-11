@@ -1,14 +1,14 @@
 class Endboss extends MovableObject {
 
-    height = 400;
-    width = 280;
-    y = 50;
+    height = 320;
+    width = 260;
+    y = 130;
 
     offset = {
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0
+        top: 55,
+        bottom: 15,
+        left: 20,
+        right: 20
       }
 
     IMAGES_WALKING = [
