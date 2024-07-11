@@ -28,7 +28,7 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
-        }, 200);
+        }, 50);
     }
 
     collectBottle(bottle) {
@@ -55,16 +55,22 @@ class World {
         }
     }
 
-    checkCollisions() {
-        this.level.enemies.forEach( (enemy) => {
-            if(this.character.isColliding(enemy) ) {
-                 this.character.hit();
-                 this.healthStatusBar.setPercentage(this.character.health);
-                 console.log(this.character.health);
-            }
-         });
 
-         this.level.bottles.forEach( (bottle) => {
+    checkCollisions() {
+        this.level.enemies.forEach((enemy) => {
+            if (this.character.isColliding(enemy)) {
+                if (this.character.isCollidingFromAbove(enemy)) {
+                    // enemy.kill();  // Feind töten
+                    console.log('kill')
+                } else {
+                    this.character.hit();  // Charakter nimmt Schaden
+                    this.healthStatusBar.setPercentage(this.character.health);
+                    console.log(this.character.health);
+                }
+            }
+        });
+
+        this.level.bottles.forEach( (bottle) => {
             if(this.character.isColliding(bottle) ) {
                  this.collectBottle(bottle);
             }
@@ -76,6 +82,29 @@ class World {
             }
          });
     }
+
+    // checkCollisions() {
+    //     this.level.enemies.forEach( (enemy) => {
+    //         if(this.character.isColliding(enemy) ) {
+    //              this.character.hit();
+    //              this.healthStatusBar.setPercentage(this.character.health);
+    //              console.log(this.character.health);
+    //         }
+    //      });
+
+        //  this.level.bottles.forEach( (bottle) => {
+        //     if(this.character.isColliding(bottle) ) {
+        //          this.collectBottle(bottle);
+        //     }
+        //  });
+
+        //  this.level.coins.forEach( (coin) => {
+        //     if(this.character.isColliding(coin) ) {
+        //          this.collectCoin(coin);
+        //     }
+        //  });
+    // }
+    
 
     checkThrowObjects() {
         if (this.keyboard.D && this.character.bottles > 0) { // checks if character has min. 1 bottle
