@@ -37,4 +37,11 @@ class Endboss extends MovableObject {
         }, 200);
     }
 
+    kill() {
+        this.stopIntervals();
+        this.speed = 0;
+        this.loadImage(this.IMAGE_DEAD[0]);
+        this.isAlive = false;
+    }
+    
 }

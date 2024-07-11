@@ -9,7 +9,7 @@ class World {
     bottlesStatusBar = new BottlesStatusBar();
     coinsStatusBar = new CoinsStatusBar();
     throwableObjects = [];
-    bottles = [];
+    lastThrowTime = 0; // Initialize last throw time
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -83,6 +83,18 @@ class World {
                 this.collectCoin(coin);
             }
         });
+
+        this.throwableObjects.forEach((thrownBottle) => {
+            this.level.enemies.forEach((enemy) => {
+                if (thrownBottle.isColliding(enemy)) {
+                    // Handle collision
+                    console.log('Bottle hit enemy');
+                    enemy.kill();
+                    this.removeDeadEnemy(enemy);
+                    // thrownBottle.explode(); // Example method to handle bottle explosion
+                }
+            });
+        });
     }
 
     removeDeadEnemy(enemy) {
@@ -118,18 +130,27 @@ class World {
     // }
     
 
+    // checkThrowObjects() {
+    //     if (this.keyboard.D && this.character.bottles > 0) { // checks if character has min. 1 bottle
+    //         const direction = this.character.otherDirection ? 'left' : 'right'; 
+    //         let bottle = new ThrowableObject(this.character.x + (direction === 'right' ? 100 : -100), this.character.y + 100, direction);
+    //         this.throwableObjects.push(bottle);
+    //         this.character.bottles -= 1; // Removes a bottle after throwing
+    //         this.bottlesStatusBar.setPercentage(this.character.bottles * 20); // Update BottlesStatusbar
+    //     }
+    // }
+
     checkThrowObjects() {
-        if (this.keyboard.D && this.character.bottles > 0) { // checks if character has min. 1 bottle
-            const direction = this.character.otherDirection ? 'left' : 'right'; 
+        const currentTime = Date.now();
+        if (this.keyboard.D && this.character.bottles > 0 && currentTime - this.lastThrowTime >= 300) { // checks if character has min. 1 bottle and 300 ms have passed
+            const direction = this.character.otherDirection ? 'left' : 'right';
             let bottle = new ThrowableObject(this.character.x + (direction === 'right' ? 100 : -100), this.character.y + 100, direction);
             this.throwableObjects.push(bottle);
             this.character.bottles -= 1; // Removes a bottle after throwing
             this.bottlesStatusBar.setPercentage(this.character.bottles * 20); // Update BottlesStatusbar
+            this.lastThrowTime = currentTime; // Update the last throw time
         }
     }
-
- 
-    
 
 
     draw() {
