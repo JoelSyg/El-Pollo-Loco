@@ -78,7 +78,17 @@ class Character extends MovableObject {
 
   world;
   walking_sound = new Audio("audio/running.mp3");
+  death_sound = new Audio("audio/pepe_death.mp3");
+  
+  pepe_hurt_sounds = [
+    new Audio('audio/pepe_hurt1.mp3'),
+    new Audio('audio/pepe_hurt2.mp3'),
+    new Audio('audio/pepe_hurt3.mp3')
+  ];
+
+  soundPlaying = false;
   idleStartTime = null;
+ 
 
   constructor() {
     super().loadImage("/img/2_character_pepe/2_walk/W-21.png");
@@ -90,6 +100,7 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_LONG_IDLE);
     this.applyGravity();
     this.animate();
+
   }
 
   resetIdleTimer() {
@@ -125,8 +136,10 @@ class Character extends MovableObject {
 
     setInterval(() => {
       if (this.isDead()) {
+        this.death_sound.play();
         this.playAnimation(this.IMAGES_DEAD);
       } else if (this.isHurt()) {
+        this.playRandomHurtSound();
         this.playAnimation(this.IMAGES_HURT);
       } else if (this.isAboveGround()) {
         this.playAnimation(this.IMAGES_JUMPING);
@@ -144,5 +157,22 @@ class Character extends MovableObject {
       }
     }, 80);
   }
-}
 
+
+  playRandomHurtSound() {
+    if (!this.soundPlaying) {
+      const hurtSounds = this.pepe_hurt_sounds;
+      const randomIndex = Math.floor(Math.random() * hurtSounds.length);
+      const selectedSound = hurtSounds[randomIndex];
+
+      selectedSound.play();
+      this.soundPlaying = true;
+
+      // Use setTimeout to reset the soundPlaying flag after the duration of the sound
+      setTimeout(() => {
+        this.soundPlaying = false;
+      }, selectedSound.duration * 1000); // Convert to milliseconds
+    }
+  }
+
+}

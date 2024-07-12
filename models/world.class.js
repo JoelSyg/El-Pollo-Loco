@@ -11,6 +11,8 @@ class World {
     throwableObjects = [];
     lastThrowTime = 0; // Initialize last throw time
 
+    gameMusic = new Audio ('audio/music.mp3');
+
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -18,7 +20,13 @@ class World {
         this.draw();
         this.setWorld();
         this.run();
+
+        this.gameMusic.play();
     }
+
+    // playGameMusic() {
+    //     this.gameMusic.play();
+    // }
 
     setWorld() {
         this.character.world = this;
@@ -33,6 +41,7 @@ class World {
 
     collectBottle(bottle) {
         if (this.character.bottles < 5) {
+        bottle.pickup_sound.play();
         this.character.bottles += 1;
         this.bottlesStatusBar.setPercentage(this.character.bottles * 20); // Update Bottlestatusbar
         
@@ -45,6 +54,8 @@ class World {
     }
 
     collectCoin(coin) {
+
+        coin.collect_sound.play();
         this.character.coins += 1;
         this.coinsStatusBar.setPercentage(this.character.coins * 10); // Update Coinstatusbar
         
@@ -87,6 +98,7 @@ class World {
         this.throwableObjects.forEach((thrownBottle) => {
             if (!thrownBottle.hasHit && thrownBottle.y > 355) {
                 thrownBottle.bottleSplash();
+                thrownBottle.break_sound.play();
                 thrownBottle.hasHit = true;
                 this.removeThrownBottle(thrownBottle);
                 console.log(thrownBottle.y, 'boden getroffen');
@@ -97,6 +109,7 @@ class World {
                         console.log('Bottle hit enemy');
                         enemy.hitByBottle();
                         thrownBottle.bottleSplash();
+                        thrownBottle.splash_sound.play();
                         thrownBottle.hasHit = true;
                         this.removeThrownBottle(thrownBottle);
                         if (!enemy.isAlive) {

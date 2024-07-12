@@ -22,6 +22,8 @@ class ChickenSmall extends MovableObject {
 
     intervals = [];
 
+    death_sound = new Audio('audio/small_chicken_death.mp3');
+
     constructor() {
         super().loadImage('/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.loadImages(this.IMAGES_WALKING);
@@ -48,6 +50,7 @@ class ChickenSmall extends MovableObject {
     // }
 
     kill() {
+        this.death_sound.play();
         this.stopIntervals();
         this.speed = 0;
         this.loadImage(this.IMAGE_DEAD[0]);

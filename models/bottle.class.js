@@ -16,6 +16,8 @@ class Bottle extends MovableObject {
         'img/6_salsa_bottle/2_salsa_bottle_on_ground.png'
     ]
 
+    pickup_sound = new Audio ('audio/item_pickup.ogg');
+
     constructor() {
         super();
         this.x = 300 + Math.random() * 1200;

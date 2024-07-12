@@ -45,6 +45,8 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/5_dead/G26.png'
     ];
 
+    hurt_sound = new Audio('audio/endboss_hurt.mp3');
+
     intervals = [];
 
     constructor() {
@@ -78,6 +80,8 @@ class Endboss extends MovableObject {
         if (this.health > 51) {
             this.health -= 50;
             this.lastHit = new Date().getTime();  // Set last hit time
+            this.hurt_sound.play();
+
         } else {
             this.health = 0;
             this.kill();
