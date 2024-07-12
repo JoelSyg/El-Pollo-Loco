@@ -85,21 +85,29 @@ class World {
         });
 
         this.throwableObjects.forEach((thrownBottle) => {
-            this.level.enemies.forEach((enemy) => {
-                if (thrownBottle.isColliding(enemy)) {
-                    // Handle collision
-                    console.log('Bottle hit enemy');
-                    enemy.hitByBottle();
-                    this.removeThrownBottle(thrownBottle);
-                    if (!enemy.isAlive) {
-                    this.removeDeadEnemy(enemy);
-                    // thrownBottle.explode(); // Example method to handle bottle explosion
+            if (!thrownBottle.hasHit && thrownBottle.y > 355) {
+                thrownBottle.bottleSplash();
+                thrownBottle.hasHit = true;
+                this.removeThrownBottle(thrownBottle);
+                console.log(thrownBottle.y, 'boden getroffen');
+            } else {
+                this.level.enemies.forEach((enemy) => {
+                    if (!thrownBottle.hasHit && thrownBottle.isColliding(enemy)) {
+                        // Handle collision
+                        console.log('Bottle hit enemy');
+                        enemy.hitByBottle();
+                        thrownBottle.bottleSplash();
+                        thrownBottle.hasHit = true;
+                        this.removeThrownBottle(thrownBottle);
+                        if (!enemy.isAlive) {
+                            this.removeDeadEnemy(enemy);
+                        }
                     }
-                }
-            });
+                });
+            }
         });
+        
     }
-
 
     removeThrownBottle(thrownBottle) {
         setTimeout(() => {
@@ -107,7 +115,7 @@ class World {
             if (index > -1) {
                 this.throwableObjects.splice(index, 1);
             }
-        }, 5);
+        }, 500);
     }
 
     removeDeadEnemy(enemy) {

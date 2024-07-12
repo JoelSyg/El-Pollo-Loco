@@ -1,6 +1,5 @@
 class ThrowableObject extends MovableObject {
 
-
     IMAGES_ROTATING = [
         'img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
         'img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
@@ -8,10 +7,19 @@ class ThrowableObject extends MovableObject {
         'img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png'
     ]
 
+    IMAGES_SPLASH = [
+        'img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png',
+        'img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png',
+        'img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png',
+        'img/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png',
+        'img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
+        'img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png'
+    ]
 
     constructor(x, y, direction) {
         super().loadImage(this.IMAGES_ROTATING[3]);
         this.loadImages(this.IMAGES_ROTATING);
+        this.loadImages(this.IMAGES_SPLASH);
         this.direction = direction;
         this.height = 60;
         this.width = 50;
@@ -19,22 +27,30 @@ class ThrowableObject extends MovableObject {
         this.x = direction === 'right' ? x - 30 : x + 80;
         this.y = y;
         this.throw();
-        this.animate();
+        this.animate(this.IMAGES_ROTATING, 150);
+        this.hasHit = false; // Prüft ob die bottle schon gehittet hat
     }
     
-
     throw() {
         this.speedY = 30;
         this.applyGravity();
         const speedX = this.direction === 'left' ? -10 : 10; // Adjust speedX based on direction
-        setInterval(() => {
+        this.moveInterval = setInterval(() => {
             this.x += speedX;
         }, 25);
     }
 
-    animate(){
-        setInterval( () => {
-            this.playAnimation(this.IMAGES_ROTATING);
-        }, 150);
+    animate(path, time){
+        this.animateInterval = setInterval(() => {
+            this.playAnimation(path);
+        }, time);
+    }
+
+    bottleSplash() {
+        this.speedY = 0;
+        this.acceleration = 0;
+        clearInterval(this.moveInterval); // Stop moving
+        clearInterval(this.animateInterval); // Stop rotating
+        this.animate(this.IMAGES_SPLASH, 100)
     }
 }

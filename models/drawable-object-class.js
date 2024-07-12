@@ -24,7 +24,7 @@ class DrawableObject {
         if(this instanceof Character || this instanceof Chicken || this instanceof ChickenSmall || this instanceof Endboss || this instanceof Bottle || this instanceof Coin) {
         ctx.beginPath();
         ctx.lineWidth = "3";
-        ctx.strokeStyle = "blue";
+        ctx.strokeStyle = "transparent";
         ctx.rect(this.x, this.y, this.width, this.height);
         ctx.stroke();
         }
@@ -35,7 +35,7 @@ class DrawableObject {
         if(this instanceof Character || this instanceof Chicken || this instanceof ChickenSmall || this instanceof Endboss || this instanceof Bottle || this instanceof Coin) {
         ctx.beginPath();
         ctx.lineWidth = "3";
-        ctx.strokeStyle = "red";
+        ctx.strokeStyle = "transparent";
         ctx.rect(
             this.x + this.offset.left,         // x-Position um left-Offset verschieben
             this.y + this.offset.top,          // y-Position um top-Offset verschieben
