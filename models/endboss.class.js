@@ -4,6 +4,8 @@ class Endboss extends MovableObject {
     width = 260;
     y = 130;
 
+    speed = 2;
+
     offset = {
         top: 55,
         bottom: 15,
@@ -17,6 +19,17 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/1_walk/G3.png',
         'img/4_enemie_boss_chicken/1_walk/G4.png'
     ];
+
+    IMAGES_ALERT = [
+        'img/4_enemie_boss_chicken/2_allert/G5.png',
+        'img/4_enemie_boss_chicken/2_allert/G6.png',
+        'img/4_enemie_boss_chicken/2_allert/G7.png',
+        'img/4_enemie_boss_chicken/2_allert/G8.png',
+        'img/4_enemie_boss_chicken/2_allert/G9.png',
+        'img/4_enemie_boss_chicken/2_allert/G10.png',
+        'img/4_enemie_boss_chicken/2_allert/G11.png',
+        'img/4_enemie_boss_chicken/2_allert/G12.png',
+    ]
 
     IMAGES_ATTACK = [
         'img/4_enemie_boss_chicken/3_attack/G13.png',
@@ -70,6 +83,10 @@ class Endboss extends MovableObject {
                 this.playAnimation(this.IMAGES_WALKING);
             }
         }, 200);
+
+        setInterval(() => {
+            this.checkCharacterPosition();
+        }, 1000 / 60); 
     }
 
     kill() {
@@ -91,6 +108,33 @@ class Endboss extends MovableObject {
 
     attack() {
         this.isAttacking = true;
-        setTimeout(() => this.isAttacking = false, 500); // Attack animation duration
+    }
+
+    stopAttack() {
+        this.isAttacking = false;
+    }
+
+    checkCharacterPosition() {
+        if (this.world) {
+            const character = this.world.character;
+            if (character.x < this.x) {
+                this.otherDirection = false;
+                if (!this.isColliding(character)) {
+                    this.moveLeft();
+                }
+            } else if (character.x > this.x) {
+                this.otherDirection = true;
+                if (!this.isColliding(character)) {
+                    this.moveRight();
+                }
+            }
+
+            if (this.isColliding(character)) {
+                this.attack();
+            } else {
+                this.stopAttack();
+            }
+        }
     }
 }
+

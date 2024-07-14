@@ -17,6 +17,7 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.character.world = this; // Hier wird die World-Instanz an den Character weitergegeben
         this.draw();
         this.setWorld();
         this.run();
@@ -30,6 +31,11 @@ class World {
 
     setWorld() {
         this.character.world = this;
+        this.level.enemies.forEach(enemy => {
+            if (enemy instanceof Endboss) {
+                enemy.world = this; // Übergibt die World-Instanz an den Endboss
+            }
+        });
     }
 
     run() {
