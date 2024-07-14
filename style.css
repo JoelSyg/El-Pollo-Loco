@@ -20,9 +20,22 @@ h1 {
 canvas {
   background-color: black;
   border: 3.5px solid rgb(154, 76, 42);
+  display: block;
 }
 
 @font-face {
   font-family: "zabars";
   src: url("./fonts/Zabars.ttf") format("truetype");
+}
+
+@media only screen and (max-width: 720px) {
+  canvas {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-height: 480px) {
+  canvas {
+    height: 100vh;
+  }
 }

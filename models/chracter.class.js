@@ -79,6 +79,8 @@ class Character extends MovableObject {
   world;
   walking_sound = new Audio("audio/running.mp3");
   death_sound = new Audio("audio/pepe_death.mp3");
+  jump_sound = new Audio('audio/jump.wav');
+  landing_sound = new Audio('audio/landing.wav');
   
   pepe_hurt_sounds = [
     new Audio('audio/pepe_hurt1.mp3'),
@@ -114,14 +116,14 @@ class Character extends MovableObject {
       this.walking_sound.pause();
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.moveRight();
-        this.walking_sound.play();
+        this.playWalkSound();
         this.otherDirection = false;
         this.resetIdleTimer();
       }
 
       if (this.world.keyboard.LEFT && this.x > 0) {
         this.moveLeft();
-        this.walking_sound.play();
+        this.playWalkSound();
         this.otherDirection = true;
         this.resetIdleTimer();
       }
@@ -129,6 +131,7 @@ class Character extends MovableObject {
       if (this.world.keyboard.UP && !this.isAboveGround()) {
         this.jump();
         this.resetIdleTimer();
+        this.playJumpSound();
       }
 
       this.world.camera_x = -this.x + 100;
@@ -173,6 +176,19 @@ class Character extends MovableObject {
         this.soundPlaying = false;
       }, selectedSound.duration * 1000); // Convert to milliseconds
     }
+  }
+
+  playWalkSound() {
+    if (this.y > 180) { // walking sound nur abspielen wenn man auch auf dem boden ist...
+      this.walking_sound.play();
+      }
+  }
+
+  playJumpSound() {
+    this.jump_sound.play();
+    setTimeout(() => {
+      this.landing_sound.play();
+    }, 900);
   }
 
 }

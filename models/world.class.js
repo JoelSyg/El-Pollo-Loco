@@ -21,7 +21,7 @@ class World {
         this.setWorld();
         this.run();
 
-        this.gameMusic.play();
+        // this.gameMusic.play();
     }
 
     // playGameMusic() {
@@ -69,19 +69,23 @@ class World {
 
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy) & enemy.isAlive) { // Auf Kollision prüfen und prüfen ob enemy noch alive ist
+            if (this.character.isColliding(enemy) & enemy.isAlive) { // Check for collision and if enemy is still alive
+                if (enemy instanceof Endboss) { // Check if the enemy is the endboss
+                    enemy.attack(); // Make the endboss attack
+                }
                 if (this.character.isCollidingFromAbove(enemy)) {
-                    enemy.kill(enemy);  // enemy töten
+                    enemy.kill();  // Kill the enemy
                     console.log('Chicken getötet');
-                    this.removeDeadEnemy(enemy); // dead enemy removen
-
+                    this.removeDeadEnemy(enemy); // Remove dead enemy
+        
                 } else {
-                    this.character.hit();  // Charakter nimmt Schaden
+                    this.character.hit();  // Character takes damage
                     this.healthStatusBar.setPercentage(this.character.health);
                     console.log(this.character.health);
                 }
             }
         });
+        
 
         this.level.bottles.forEach((bottle) => {
             if (this.character.isColliding(bottle)) {
