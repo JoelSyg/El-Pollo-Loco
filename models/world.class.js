@@ -8,6 +8,7 @@ class World {
     healthStatusBar = new HealthStatusBar();
     bottlesStatusBar = new BottlesStatusBar();
     coinsStatusBar = new CoinsStatusBar();
+    bossHealthStatusBar = new BossHealthStatusBar();
     throwableObjects = [];
     lastThrowTime = 0; // Initialize last throw time
 
@@ -33,6 +34,7 @@ class World {
                 enemy.world = this; // Übergibt die World-Instanz an den Endboss
             }
         });
+        this.bossHealthStatusBar.setVisible(false); // Hide initially
     }
 
     playGameMusic() {
@@ -58,6 +60,9 @@ class World {
         this.level.enemies.forEach((enemy) => {
             if (enemy instanceof Endboss && enemy.isChasing) {
                 this.startEndbossMusic();
+                this.bossHealthStatusBar.setVisible(true); // Show health bar
+            } else {
+                this.bossHealthStatusBar.setVisible(false); // Hide health bar when not chasing (optional)
             }
         });
     }
@@ -92,36 +97,35 @@ class World {
 
     checkCollisions() {
         this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy) & enemy.isAlive) { // Check for collision and if enemy is still alive
-                if (enemy instanceof Endboss) { // Check if the enemy is the endboss
-                    enemy.attack(); // Make the endboss attack
+            if (this.character.isColliding(enemy) && enemy.isAlive) {
+                if (enemy instanceof Endboss) {
+                    enemy.attack();
                 }
                 if (this.character.isCollidingFromAbove(enemy)) {
-                    enemy.kill();  // Kill the enemy
+                    enemy.kill();
                     console.log('Chicken getötet');
-                    this.removeDeadEnemy(enemy); // Remove dead enemy
-        
+                    this.removeDeadEnemy(enemy);
+    
                 } else {
-                    this.character.hit();  // Character takes damage
+                    this.character.hit();
                     this.healthStatusBar.setPercentage(this.character.health);
                     console.log(this.character.health);
                 }
             }
         });
-        
-
+    
         this.level.bottles.forEach((bottle) => {
             if (this.character.isColliding(bottle)) {
                 this.collectBottle(bottle);
             }
         });
-
+    
         this.level.coins.forEach((coin) => {
             if (this.character.isColliding(coin)) {
                 this.collectCoin(coin);
             }
         });
-
+    
         this.throwableObjects.forEach((thrownBottle) => {
             if (!thrownBottle.hasHit && thrownBottle.y > 360) {
                 thrownBottle.bottleSplash();
@@ -132,7 +136,6 @@ class World {
             } else {
                 this.level.enemies.forEach((enemy) => {
                     if (!thrownBottle.hasHit && thrownBottle.isColliding(enemy)) {
-                        // Handle collision
                         console.log('Bottle hit enemy');
                         enemy.hitByBottle();
                         thrownBottle.bottleSplash();
@@ -142,12 +145,18 @@ class World {
                         if (!enemy.isAlive) {
                             this.removeDeadEnemy(enemy);
                         }
+                        if (enemy instanceof Endboss) {
+                            
+                                this.bossHealthStatusBar.setPercentage(enemy.health);
+                                console.log(enemy.health);
+                            
+                        }
                     }
                 });
             }
         });
-        
     }
+    
 
     removeThrownBottle(thrownBottle) {
         setTimeout(() => {
@@ -203,7 +212,7 @@ class World {
 
     checkThrowObjects() {
         const currentTime = Date.now();
-        if (this.keyboard.D && this.character.bottles > 0 && currentTime - this.lastThrowTime >= 300) { // checks if character has min. 1 bottle and 300 ms have passed
+        if (this.keyboard.D && this.character.bottles > 0 && currentTime - this.lastThrowTime >= 500) { // checks if character has min. 1 bottle and 300 ms have passed
             const direction = this.character.otherDirection ? 'left' : 'right';
             let bottle = new ThrowableObject(this.character.x + (direction === 'right' ? 100 : -100), this.character.y + 100, direction);
             this.throwableObjects.push(bottle);
@@ -232,6 +241,10 @@ class World {
         this.addToMap(this.healthStatusBar);
         this.addToMap(this.coinsStatusBar);
         this.addToMap(this.bottlesStatusBar);
+            // Only add bossHealthStatusBar if visible
+        if (this.bossHealthStatusBar.visible) {
+            this.addToMap(this.bossHealthStatusBar);
+        }
         //
         this.ctx.translate(this.camera_x, 0);
 
@@ -275,4 +288,4 @@ class World {
         this.ctx.restore();
     }
 
-}
+} 
