@@ -5,6 +5,7 @@ class Endboss extends MovableObject {
     y = 130;
 
     speed = 2;
+    originalSpeed = 2;  // To store the original speed
 
     offset = {
         top: 55,
@@ -21,15 +22,15 @@ class Endboss extends MovableObject {
     ];
 
     IMAGES_ALERT = [
-        'img/4_enemie_boss_chicken/2_allert/G5.png',
-        'img/4_enemie_boss_chicken/2_allert/G6.png',
-        'img/4_enemie_boss_chicken/2_allert/G7.png',
-        'img/4_enemie_boss_chicken/2_allert/G8.png',
-        'img/4_enemie_boss_chicken/2_allert/G9.png',
-        'img/4_enemie_boss_chicken/2_allert/G10.png',
-        'img/4_enemie_boss_chicken/2_allert/G11.png',
-        'img/4_enemie_boss_chicken/2_allert/G12.png',
-    ]
+        'img/4_enemie_boss_chicken/2_alert/G5.png',
+        'img/4_enemie_boss_chicken/2_alert/G6.png',
+        'img/4_enemie_boss_chicken/2_alert/G7.png',
+        'img/4_enemie_boss_chicken/2_alert/G8.png',
+        'img/4_enemie_boss_chicken/2_alert/G9.png',
+        'img/4_enemie_boss_chicken/2_alert/G10.png',
+        'img/4_enemie_boss_chicken/2_alert/G11.png',
+        'img/4_enemie_boss_chicken/2_alert/G12.png',
+    ];
 
     IMAGES_ATTACK = [
         'img/4_enemie_boss_chicken/3_attack/G13.png',
@@ -55,17 +56,22 @@ class Endboss extends MovableObject {
     ];
 
     hurt_sound = new Audio('audio/endboss_hurt.mp3');
+    sound = new Audio('audio/chickenBoss.wav')
 
     intervals = [];
     isAttacking = false;  // Add an attacking state
+    isChasing = false;    // Add a chasing state
+    isAlert = false;      // Add an alert state
+    isHurt = false;       // Add a hurt state
 
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);
         this.loadImages(this.IMAGES_WALKING);
+        this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_DEAD);
         this.loadImages(this.IMAGES_HURT);
-        this.x = 700;
+        this.x = 3800;
         this.isBoss = true;
         this.health = 100; // Initialize health
         this.animate();
@@ -75,9 +81,11 @@ class Endboss extends MovableObject {
         setInterval(() => {
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
-            } else if (this.isHurt()) {
+            } else if (this.isHurt) {
                 this.playAnimation(this.IMAGES_HURT);
-            } else if (this.isAttacking) {  // Check if the endboss is attacking
+            } else if (this.isAlert) {
+                this.playAnimation(this.IMAGES_ALERT);
+            } else if (this.isAttacking) {
                 this.playAnimation(this.IMAGES_ATTACK);
             } else {
                 this.playAnimation(this.IMAGES_WALKING);
@@ -95,46 +103,76 @@ class Endboss extends MovableObject {
     }
 
     hitByBottle() {
-        if (this.health > 51) {
-            this.health -= 50;
+        if (this.health > 21) {
+            this.health -= 20;
             this.lastHit = new Date().getTime();  // Set last hit time
             this.hurt_sound.play();
-
+            this.hurt();
+            setTimeout(() => {
+                this.goToAlertState();
+            }, 500);  // Set alert state after 400ms
         } else {
             this.health = 0;
             this.kill();
         }
     }
 
+    hurt() {
+        this.isHurt = true;
+        setTimeout(() => {
+            this.isHurt = false;
+        }, 200);  // Hurt state lasts for 200ms
+    }
+
+    goToAlertState() {
+        this.isAlert = true;
+        this.speed = 14;  // Increase speed temporarily
+        setTimeout(() => {
+            this.isAlert = false;
+            this.speed = this.originalSpeed;
+        }, 550);  // Set alert state and speed back to normal after 400ms
+    }
+
     attack() {
         this.isAttacking = true;
+        this.sound.play();
     }
 
     stopAttack() {
         this.isAttacking = false;
     }
 
+    startChasing() {
+        this.isChasing = true;  // Set the chasing state to true
+    }
+
     checkCharacterPosition() {
         if (this.world) {
             const character = this.world.character;
-            if (character.x < this.x) {
-                this.otherDirection = false;
-                if (!this.isColliding(character)) {
-                    this.moveLeft();
-                }
-            } else if (character.x > this.x) {
-                this.otherDirection = true;
-                if (!this.isColliding(character)) {
-                    this.moveRight();
-                }
+            const distance = Math.abs(character.x - this.x);
+            if (distance < 465) {  // Check if the character is within 465 pixels, start chase
+                this.startChasing();
             }
 
-            if (this.isColliding(character)) {
-                this.attack();
-            } else {
-                this.stopAttack();
+            if (this.isChasing) {  // If chasing has started, always move towards the character
+                if (character.x < this.x) {
+                    this.otherDirection = false;
+                    if (!this.isColliding(character)) {
+                        this.moveLeft();
+                    }
+                } else if (character.x > this.x) {
+                    this.otherDirection = true;
+                    if (!this.isColliding(character)) {
+                        this.moveRight();
+                    }
+                }
+
+                if (this.isColliding(character)) {
+                    this.attack();
+                } else {
+                    this.stopAttack();
+                }
             }
         }
     }
 }
-
