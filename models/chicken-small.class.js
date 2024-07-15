@@ -27,9 +27,10 @@ class ChickenSmall extends MovableObject {
     constructor() {
         super().loadImage('/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.loadImages(this.IMAGES_WALKING);
+        this.applyGravity();
 
-        this.x = 200 + Math.random() * 500;
-        this.speed = 0.15 + Math.random() * 0.45;
+        this.x = 900 + Math.random() * (3600 - 1200);
+        this.speed = 0.65 + Math.random() * 0.45;
 
         this.animate();
     }
@@ -42,6 +43,11 @@ class ChickenSmall extends MovableObject {
         this.intervals.push(setInterval(() => {
             this.playAnimation(this.IMAGES_WALKING);
         }, 200));
+
+        // Hier fügen wir das Interval hinzu, um die jump-Funktion alle 2 Sekunden aufzurufen
+        // this.intervals.push(setInterval(() => {
+        //     this.jump();
+        // }, 2000));
     }
 
     // stopIntervals() {
@@ -57,5 +63,4 @@ class ChickenSmall extends MovableObject {
         this.isAlive = false;
     }
 }
-
 

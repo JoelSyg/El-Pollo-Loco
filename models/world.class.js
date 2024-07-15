@@ -12,6 +12,7 @@ class World {
     lastThrowTime = 0; // Initialize last throw time
 
     gameMusic = new Audio ('audio/music.mp3');
+    endbossMusic = new Audio('audio/endboss_music.wav');
 
     constructor(canvas, keyboard){
         this.ctx = canvas.getContext('2d');
@@ -21,13 +22,9 @@ class World {
         this.draw();
         this.setWorld();
         this.run();
-
-        // this.gameMusic.play();
+        this.playGameMusic();
     }
 
-    // playGameMusic() {
-    //     this.gameMusic.play();
-    // }
 
     setWorld() {
         this.character.world = this;
@@ -38,11 +35,31 @@ class World {
         });
     }
 
+    playGameMusic() {
+        this.gameMusic.loop = true;  // Setze die Musik auf Schleife
+        this.gameMusic.play();
+    }
+
+    startEndbossMusic() {
+        this.gameMusic.pause();  // Pausiere die Standard-Musik
+        this.endbossMusic.loop = true;  // Setze die Endboss-Musik auf Schleife
+        this.endbossMusic.play();
+    }
+
     run() {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
-        }, 50);
+            this.checkEndbossChasing();  // Neue Methode zur Überprüfung der Verfolgung
+        }, 25);
+    }
+
+    checkEndbossChasing() {
+        this.level.enemies.forEach((enemy) => {
+            if (enemy instanceof Endboss && enemy.isChasing) {
+                this.startEndbossMusic();
+            }
+        });
     }
 
     collectBottle(bottle) {
@@ -106,7 +123,7 @@ class World {
         });
 
         this.throwableObjects.forEach((thrownBottle) => {
-            if (!thrownBottle.hasHit && thrownBottle.y > 355) {
+            if (!thrownBottle.hasHit && thrownBottle.y > 360) {
                 thrownBottle.bottleSplash();
                 thrownBottle.break_sound.play();
                 thrownBottle.hasHit = true;

@@ -37,7 +37,7 @@ class ThrowableObject extends MovableObject {
     
     throw() {
         this.throw_sound.play();
-        this.speedY = 30;
+        this.speedY = 20;
         this.applyGravity();
         const speedX = this.direction === 'left' ? -10 : 10; // Adjust speedX based on direction
         this.moveInterval = setInterval(() => {
