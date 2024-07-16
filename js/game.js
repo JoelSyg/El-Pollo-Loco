@@ -4,12 +4,15 @@ let keyboard = new Keyboard();
 
 function init(){
     canvas = document.getElementById('canvas');
-    world = new World(canvas, keyboard);
-
-    console.log('my chrackter is', world.character);
 }
 
-
+function startGame(){
+    initLevel();
+    document.getElementById('start-menu').style.display = 'none';
+    canvas.style.display = 'block';
+    world = new World(canvas, keyboard);
+    console.log('my character is', world.character);
+}
 
 window.addEventListener('keydown', (e) => {
     if(e.keyCode == 39) {
@@ -62,3 +65,5 @@ window.addEventListener('keyup', (e) => {
         keyboard.D = false;
     }
 });
+
+window.onload = init;

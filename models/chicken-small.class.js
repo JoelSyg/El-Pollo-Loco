@@ -62,5 +62,9 @@ class ChickenSmall extends MovableObject {
         this.loadImage(this.IMAGE_DEAD[0]);
         this.isAlive = false;
     }
+
+    hitByBottle() {
+        this.kill();
+    }
 }
 
