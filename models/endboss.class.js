@@ -3,8 +3,8 @@ class Endboss extends MovableObject {
     width = 260;
     y = 130;
 
-    speed = 2;
-    originalSpeed = 2;
+    speed = 2.5;
+    originalSpeed = 2.5;
 
     health = 100; // Initialize health property
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El pollo loco</title>
+    <title>El Pollo Loco</title>
     <link rel="stylesheet" href="style.css">
     <script src="models/drawable-object-class.js"></script>
     <script src="models/movable-object.class.js"></script>
@@ -29,12 +29,38 @@
 </head>
 
 <body>
-    <h1>El Pollo Loco</h1>
+    <h1 id="gameTitle">El Pollo Loco</h1>
 
-    <div id="start-menu">
-        <button onclick="startGame()">Start Game</button>
+    <div id="startMenu">
+        <img id="menuImage" src="./img/9_intro_outro_screens/start/startscreen_2.png" alt="">
+        <button id="startButton" onclick="startGame()">Start Game</button>
     </div>
 
-    <canvas id="canvas" width="720" height="480" style="display:none;"></canvas>
+    <div id="controlDiv">
+        <span>Arrows Left/Right = Walk</span><span>Arrow Up = Jump</span><span>D = Throw Salsa</span>
+    </div>
+    
+    <div id="gameContainer">
+        <canvas id="canvas" width="720" height="480" style="display:none;"></canvas>
+        <div id="bottomPanel" class="mobile-controls hidden">
+            <button id="btnLeft" class="control-button">
+                <img src="./img/10_mobile/arrow_left.png" alt="Left">
+            </button>
+            <button id="btnRight" class="control-button">
+                <img src="./img/10_mobile/arrow_right.png" alt="Right">
+            </button>
+            <button id="btnJump" class="control-button">
+                <img id="btnJumpImg" src="./img/10_mobile/arrow_up.png" alt="Jump">
+            </button>
+            <button id="btnThrow" class="control-button">
+                <img src="./img/10_mobile/salsa_bottle.png" alt="Throw">
+            </button>
+        </div>
+    </div>
+
+    <div id="orientationWarning" class="hidden">
+        <h2>Please turn your device to play</h2>
+        <img src="./img/2_character_pepe/1_idle/idle/I-1.png" alt="Character Pepe">
+    </div>
 </body>
 </html>

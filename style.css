@@ -13,6 +13,7 @@ body {
 
 h1 {
   font-size: 32px;
+  margin-bottom: 24px;
   letter-spacing: 3px;
   text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
 }
@@ -20,14 +21,70 @@ h1 {
 #canvas {
   background-color: black;
   border: 3.5px solid rgb(154, 76, 42);
+  border-radius: 5px;
   display: none;
 }
 
-#start-menu {
+#startMenu {
   display: flex;
-  justify-content: center;
+  flex-direction: column; /* Ensures the button is above the image */
   align-items: center;
-  height: 100vh;
+  height: 480px;
+  width: 720px;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  border: 3.5px solid rgb(154, 76, 42);
+  border-radius: 5px;
+}
+
+#menuImage {
+  height: 100%;
+  width: 100%;
+  position: absolute; /* Make sure the image stays in the background */
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+#startButton {
+  font-family: "zabars";
+  margin-top: 28px;
+  z-index: 2;
+  background-color: transparent; /* Vollständig transparent */
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 60px;
+  color: #FFD700; /* Goldgelbe Schriftfarbe */
+  border-radius: 5px; /* Leicht abgerundete Ecken */
+  animation: pulse 1.5s infinite; /* Endlos wiederholende Animation */
+}
+
+/* Definition der Pulse-Animation */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2); /* Vergrößern auf 120% */
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+#startButton:hover {
+  color: #FFA500; /* Intensivere Schriftfarbe beim Hover */
+}
+
+#controlDiv {
+  display: flex;
+  justify-content: space-between;
+  width: 500px;
+  font-size: 24px;
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 
 @font-face {
@@ -53,3 +110,98 @@ h1 {
   }
 }
 
+#gameContainer {
+  position: relative;
+}
+
+#bottomPanel {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.control-button {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 2px solid rgb(154, 76, 42);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.control-button img {
+  width: 70%;
+  height: 70%;
+}
+
+.mobile-controls {
+  display: none;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (pointer: coarse) {
+  .mobile-controls {
+    display: flex;
+  }
+
+  #btnLeft {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+  }
+
+  #btnRight {
+    position: absolute;
+    bottom: 20px;
+    left: 100px;
+  }
+
+  #btnJump {
+    position: absolute;
+    bottom: 20px;
+    right: 100px;
+  }
+
+  #btnJumpImg {
+    height: 32px;
+  }
+
+  #btnThrow {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+  }
+}
+
+#orientationWarning {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 10;
+}
+
+#orientationWarning h2 {
+  margin: 20px 0 0;
+  font-size: 24px;
+}
+
+#orientationWarning img {
+  width: 180px;
+  height: auto;
+}

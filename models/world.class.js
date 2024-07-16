@@ -105,7 +105,6 @@ class World {
                     enemy.kill();
                     console.log('Chicken getötet');
                     this.removeDeadEnemy(enemy);
-    
                 } else {
                     this.character.hit();
                     this.healthStatusBar.setPercentage(this.character.health);
