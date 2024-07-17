@@ -85,6 +85,7 @@ h1 {
   font-size: 24px;
   margin-top: 12px;
   margin-bottom: 12px;
+  margin: 12px auto;
 }
 
 @font-face {
@@ -204,4 +205,31 @@ h1 {
 #orientationWarning img {
   width: 180px;
   height: auto;
+}
+
+#gameOverScreen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% + 7px); /* Berücksichtige die Border des Canvas */
+  height: calc(100% + 7px); /* Berücksichtige die Border des Canvas */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  pointer-events: none; /* Damit das Overlay keine Mausereignisse abfängt */
+  box-sizing: border-box; /* Enthält Padding und Border in den Elementbreiten- und -höhenberechnungen */
+  border: 3.5px solid rgb(154, 76, 42); /* Gleiche Border wie das Canvas */
+}
+
+#gameOverImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Bild füllt den gesamten Container */
+}
+
+#gameOverScreen.won #gameOverImage {
+  width: 72%;
+  height: auto;
+  object-fit: contain; /* Bild behält sein Seitenverhältnis bei */
 }

@@ -96,65 +96,76 @@ class World {
 
 
     checkCollisions() {
-        this.level.enemies.forEach((enemy) => {
-            if (this.character.isColliding(enemy) && enemy.isAlive) {
-                if (enemy instanceof Endboss) {
-                    enemy.attack();
-                }
-                if (this.character.isCollidingFromAbove(enemy)) {
-                    enemy.kill();
-                    console.log('Chicken getötet');
-                    this.removeDeadEnemy(enemy);
-                } else {
-                    this.character.hit();
-                    this.healthStatusBar.setPercentage(this.character.health);
-                    console.log(this.character.health);
-                }
+    this.level.enemies.forEach((enemy) => {
+        if (this.character.isColliding(enemy) && enemy.isAlive) {
+            if (enemy instanceof Endboss) {
+                enemy.attack();
             }
-        });
-    
-        this.level.bottles.forEach((bottle) => {
-            if (this.character.isColliding(bottle)) {
-                this.collectBottle(bottle);
-            }
-        });
-    
-        this.level.coins.forEach((coin) => {
-            if (this.character.isColliding(coin)) {
-                this.collectCoin(coin);
-            }
-        });
-    
-        this.throwableObjects.forEach((thrownBottle) => {
-            if (!thrownBottle.hasHit && thrownBottle.y > 360) {
-                thrownBottle.bottleSplash();
-                thrownBottle.break_sound.play();
-                thrownBottle.hasHit = true;
-                this.removeThrownBottle(thrownBottle);
-                console.log(thrownBottle.y, 'boden getroffen');
+            if (this.character.isCollidingFromAbove(enemy)) {
+                enemy.kill();
+                console.log('Chicken getötet');
+                this.removeDeadEnemy(enemy);
             } else {
-                this.level.enemies.forEach((enemy) => {
-                    if (!thrownBottle.hasHit && thrownBottle.isColliding(enemy)) {
-                        console.log('Bottle hit enemy');
-                        enemy.hitByBottle();
-                        thrownBottle.bottleSplash();
-                        thrownBottle.splash_sound.play();
-                        thrownBottle.hasHit = true;
-                        this.removeThrownBottle(thrownBottle);
-                        if (!enemy.isAlive) {
-                            this.removeDeadEnemy(enemy);
-                        }
-                        if (enemy instanceof Endboss) {
-                            
-                                this.bossHealthStatusBar.setPercentage(enemy.health);
-                                console.log(enemy.health);
-                            
+                this.character.hit();
+                this.healthStatusBar.setPercentage(this.character.health);
+                console.log(this.character.health);
+                if (this.character.isDead()) {
+                    this.gameMusic.volume = 0; // Mute game music
+                    this.endbossMusic.volume = 0; // Mute Endboss music
+                    gameOver(false);
+                }
+            }
+        }
+    });
+
+    this.level.bottles.forEach((bottle) => {
+        if (this.character.isColliding(bottle)) {
+            this.collectBottle(bottle);
+        }
+    });
+
+    this.level.coins.forEach((coin) => {
+        if (this.character.isColliding(coin)) {
+            this.collectCoin(coin);
+        }
+    });
+
+    this.throwableObjects.forEach((thrownBottle) => {
+        if (!thrownBottle.hasHit && thrownBottle.y > 360) {
+            thrownBottle.bottleSplash();
+            thrownBottle.break_sound.play();
+            thrownBottle.hasHit = true;
+            this.removeThrownBottle(thrownBottle);
+            console.log(thrownBottle.y, 'boden getroffen');
+        } else {
+            this.level.enemies.forEach((enemy) => {
+                if (!thrownBottle.hasHit && thrownBottle.isColliding(enemy)) {
+                    console.log('Bottle hit enemy');
+                    enemy.hitByBottle();
+                    thrownBottle.bottleSplash();
+                    thrownBottle.splash_sound.play();
+                    thrownBottle.hasHit = true;
+                    this.removeThrownBottle(thrownBottle);
+                    if (!enemy.isAlive) {
+                        this.removeDeadEnemy(enemy);
+                    }
+                    if (enemy instanceof Endboss) {
+                        this.bossHealthStatusBar.setPercentage(enemy.health);
+                        console.log(enemy.health);
+                        if (enemy.isDead()) {
+                            this.gameMusic.volume = 0; // Mute game music
+                            this.endbossMusic.volume = 0; // Mute Endboss music
+                            gameOver(true);
                         }
                     }
-                });
-            }
-        });
-    }
+                }
+            });
+        }
+    });
+}
+    
+    
+    
     
 
     removeThrownBottle(thrownBottle) {

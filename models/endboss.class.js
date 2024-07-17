@@ -58,6 +58,7 @@ class Endboss extends MovableObject {
 
     hurt_sound = new Audio('audio/endboss_hurt.mp3');
     sound = new Audio('audio/chickenBoss.wav');
+    death_sound = new Audio('audio/endboss_death.mp3')
 
     intervals = [];
     isAttacking = false;
@@ -100,6 +101,7 @@ class Endboss extends MovableObject {
     kill() {
         this.speed = 0;
         this.isAlive = false;
+        this.death_sound.play();
     }
 
     hitByBottle() {
@@ -114,6 +116,7 @@ class Endboss extends MovableObject {
         } else {
             this.health = 0;
             this.kill();
+            gameOver(true); // Spiel gewonnen
         }
     }
 

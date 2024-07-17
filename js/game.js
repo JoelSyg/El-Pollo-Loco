@@ -3,6 +3,9 @@ let world;
 let keyboard = new Keyboard();
 let intervalIds = [];
 
+victory_sound = new Audio('audio/victory.mp3')
+game_over_sound = new Audio('audio/game_over.wav')
+
 /* Zentrale Verwaltung von Intervallen */
 function addInterval(fn, time, object) {
     let id = setInterval(fn, time);
@@ -14,8 +17,10 @@ function addInterval(fn, time, object) {
 }
 
 function clearAllIntervals() {
-    intervalIds.forEach(clearInterval);
-    intervalIds = [];
+    setTimeout(() => {
+        intervalIds.forEach(clearInterval);
+        intervalIds = [];
+    }, 250);
 }
 
 /* Initialisierungsfunktion */
@@ -31,15 +36,22 @@ window.onload = init; // Initialisierungsfunktion beim Laden des Fensters ausfü
 
 /* Funktion zum Starten des Spiels */
 function startGame() {
-    initLevel(); // Level initialisieren
-    document.getElementById('startMenu').style.display = 'none'; // Startmenü ausblenden
-    canvas.style.display = 'block'; // Canvas anzeigen
-    if (!document.querySelector('.mobile-controls').classList.contains('hidden')) {
-        document.getElementById('controlDiv').style.display = 'none'; // Tastatursteuerungserklärung ausblenden, wenn mobile Steuerungsbuttons sichtbar sind
+    if (world) {
+        clearAllIntervals();
+        world = null;
     }
-    world = new World(canvas, keyboard); // Spielwelt erstellen
+    initLevel();
+    document.getElementById('startMenu').style.display = 'none';
+    document.getElementById('gameOverScreen').classList.add('hidden');
+    canvas.style.display = 'block';
+    document.getElementById('controlDiv').style.display = 'flex'; // Ensure controlDiv is displayed
+    if (!document.querySelector('.mobile-controls').classList.contains('hidden')) {
+        document.getElementById('controlDiv').style.display = 'none'; // Hide keyboard controls if mobile controls are visible
+    }
+    world = new World(canvas, keyboard); // Create the game world
     console.log('my character is', world.character);
 }
+
 
 /* Funktion zum Stoppen des Spiels */
 function stopGame() {
@@ -49,6 +61,38 @@ function stopGame() {
     }
     // Füge hier ähnliche Aufrufe für andere Spielobjekte hinzu, falls nötig
 }
+
+function gameOver(won) {
+    setTimeout(() => {
+        stopGame();
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const gameOverImage = document.getElementById('gameOverImage');
+        gameOverScreen.classList.remove('hidden');
+        gameOverScreen.style.width = (canvas.clientWidth + 7) + 'px'; // +7 für die 3,5px Border auf jeder Seite
+        gameOverScreen.style.height = (canvas.clientHeight + 7) + 'px'; // +7 für die 3,5px Border auf jeder Seite
+        if (won) {
+            gameOverScreen.classList.add('won');
+            gameOverImage.src = './img/9_intro_outro_screens/win/won_1.png';
+            this.victory_sound.play(); // Play victory sound
+        } else {
+            gameOverScreen.classList.remove('won');
+            gameOverImage.src = './img/9_intro_outro_screens/game_over/you lost.png';
+            this.game_over_sound.play(); // Play game over sound
+        }
+    }, 250);
+}
+
+
+
+/* Funktion zum Zurückkehren zum Menü */
+function returnToMenu() {
+    document.getElementById('startMenu').style.display = 'block';
+    document.getElementById('gameOverScreen').classList.add('hidden');
+    canvas.style.display = 'none';
+    clearAllIntervals();
+    world = null;
+}
+
 
 
 

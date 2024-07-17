@@ -66,8 +66,7 @@ class Character extends MovableObject {
     "img/2_character_pepe/5_dead/D-53.png",
     "img/2_character_pepe/5_dead/D-54.png",
     "img/2_character_pepe/5_dead/D-55.png",
-    "img/2_character_pepe/5_dead/D-56.png",
-    "img/2_character_pepe/5_dead/D-57.png"
+    "img/2_character_pepe/5_dead/D-56.png"
   ]
 
   IMAGES_HURT = [
@@ -90,7 +89,8 @@ class Character extends MovableObject {
 
   soundPlaying = false;
   idleStartTime = null;
- 
+  animationIntervalWalking = null;
+  animationIntervalAction = null;
 
   constructor() {
     super().loadImage("/img/2_character_pepe/2_walk/W-21.png");
@@ -102,7 +102,6 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_LONG_IDLE);
     this.applyGravity();
     this.animate();
-
   }
 
   resetIdleTimer() {
@@ -112,7 +111,7 @@ class Character extends MovableObject {
   animate() {
     this.resetIdleTimer();
 
-    addInterval(() => {
+    this.animationIntervalWalking = setInterval(() => {
       this.walking_sound.pause();
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.moveRight();
@@ -137,10 +136,9 @@ class Character extends MovableObject {
       this.world.camera_x = -this.x + 240;
     }, 1000 / 60);
 
-    addInterval(() => {
+    this.animationIntervalAction = setInterval(() => {
       if (this.isDead()) {
-        this.death_sound.play();
-        this.playAnimation(this.IMAGES_DEAD);
+        this.playDeathAnimation();
       } else if (this.isHurt()) {
         this.playRandomHurtSound();
         this.playAnimation(this.IMAGES_HURT);
@@ -158,9 +156,30 @@ class Character extends MovableObject {
           }
         }
       }
-    }, 80);
+    }, 90);
   }
 
+  playDeathAnimation() {
+    this.death_sound.play();
+    this.playAnimation(this.IMAGES_DEAD, true);
+  }
+
+  playAnimation(images, stopAtEnd = false) {
+    let i = this.currentImage % images.length;
+    let path = images[i];
+    this.img = this.imageCache[path];
+    this.currentImage++;
+    
+    if (stopAtEnd && i === images.length - 1) {
+      // Stop the animation at the last image for death animation
+      this.stopAnimation();
+    }
+  }
+
+  stopAnimation() {
+    clearInterval(this.animationIntervalWalking);
+    clearInterval(this.animationIntervalAction);
+  }
 
   playRandomHurtSound() {
     if (!this.soundPlaying) {
@@ -190,5 +209,4 @@ class Character extends MovableObject {
       this.landing_sound.play();
     }, 900);
   }
-
 }
