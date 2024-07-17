@@ -111,7 +111,7 @@ class Character extends MovableObject {
   animate() {
     this.resetIdleTimer();
 
-    this.animationIntervalWalking = setInterval(() => {
+    this.animationIntervalWalking = addInterval(() => {
       this.walking_sound.pause();
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
         this.moveRight();
@@ -136,7 +136,7 @@ class Character extends MovableObject {
       this.world.camera_x = -this.x + 240;
     }, 1000 / 60);
 
-    this.animationIntervalAction = setInterval(() => {
+    this.animationIntervalAction = addInterval(() => {
       if (this.isDead()) {
         this.playDeathAnimation();
       } else if (this.isHurt()) {
