@@ -107,12 +107,10 @@ checkEnemyCollisions() {
             }
             if (this.character.isCollidingFromAbove(enemy)) {
                 enemy.kill();
-                console.log("Chicken getötet");
                 this.removeDeadEnemy(enemy);
             } else {
                 this.character.hit();
                 this.healthStatusBar.setPercentage(this.character.health);
-                console.log(this.character.health);
                 if (this.character.isDead()) {
                     this.muteAllMusic();
                     gameOver(false);
@@ -153,13 +151,11 @@ handleBottleHitGround(thrownBottle) {
     thrownBottle.break_sound.play();
     thrownBottle.hasHit = true;
     this.removeThrownBottle(thrownBottle);
-    console.log(thrownBottle.y, "boden getroffen");
 }
 
 checkThrownBottleCollisionsWithEnemies(thrownBottle) {
     this.level.enemies.forEach((enemy) => {
         if (!thrownBottle.hasHit && thrownBottle.isColliding(enemy)) {
-            console.log("Bottle hit enemy");
             enemy.hitByBottle();
             thrownBottle.bottleSplash();
             thrownBottle.splash_sound.play();
@@ -170,7 +166,6 @@ checkThrownBottleCollisionsWithEnemies(thrownBottle) {
             }
             if (enemy instanceof Endboss) {
                 this.bossHealthStatusBar.setPercentage(enemy.health);
-                console.log(enemy.health);
                 if (enemy.isDead()) {
                     this.muteAllMusic();
                     gameOver(true);

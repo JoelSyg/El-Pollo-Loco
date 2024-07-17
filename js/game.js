@@ -49,7 +49,6 @@ function startGame() {
         document.getElementById('controlDiv').style.display = 'none'; // Hide keyboard controls if mobile controls are visible
     }
     world = new World(canvas, keyboard); // Create the game world
-    console.log('my character is', world.character);
 }
 
 
