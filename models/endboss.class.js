@@ -153,29 +153,41 @@ class Endboss extends MovableObject {
         if (this.world) {
             const character = this.world.character;
             const distance = Math.abs(character.x - this.x);
+            
             if (distance < 465) {
                 this.startChasing();
             }
-
+    
             if (this.isChasing) {
-                if (character.x < this.x) {
-                    this.otherDirection = false;
-                    if (!this.isColliding(character)) {
-                        this.moveLeft();
-                    }
-                } else if (character.x > this.x) {
-                    this.otherDirection = true;
-                    if (!this.isColliding(character)) {
-                        this.moveRight();
-                    }
-                }
-
-                if (this.isColliding(character)) {
-                    this.attack();
-                } else {
-                    this.stopAttack();
-                }
+                this.chaseCharacter(character);
             }
         }
     }
+    
+    chaseCharacter(character) {
+        if (character.x < this.x) {
+            this.otherDirection = false;
+            this.moveTowards(character, 'left');
+        } else if (character.x > this.x) {
+            this.otherDirection = true;
+            this.moveTowards(character, 'right');
+        }
+    
+        if (this.isColliding(character)) {
+            this.attack();
+        } else {
+            this.stopAttack();
+        }
+    }
+    
+    moveTowards(character, direction) {
+        if (!this.isColliding(character)) {
+            if (direction === 'left') {
+                this.moveLeft();
+            } else if (direction === 'right') {
+                this.moveRight();
+            }
+        }
+    }
+    
 }

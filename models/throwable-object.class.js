@@ -52,8 +52,6 @@ class ThrowableObject extends MovableObject {
     }
 
     bottleSplash() {
-        // this.break_sound.play();
-        // this.splash_sound.play();
         this.speedY = 0;
         this.acceleration = 0;
         clearInterval(this.moveInterval); // Stop moving

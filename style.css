@@ -56,7 +56,7 @@ h1 {
   border: none;
   cursor: pointer;
   font-size: 60px;
-  color: #FFD700; /* Goldgelbe Schriftfarbe */
+  color: #ffd700; /* Goldgelbe Schriftfarbe */
   border-radius: 5px; /* Leicht abgerundete Ecken */
   animation: pulse 1.5s infinite; /* Endlos wiederholende Animation */
 }
@@ -75,7 +75,7 @@ h1 {
 }
 
 #startButton:hover {
-  color: #FFA500; /* Intensivere Schriftfarbe beim Hover */
+  color: #ffa500; /* Intensivere Schriftfarbe beim Hover */
 }
 
 #controlDiv {
