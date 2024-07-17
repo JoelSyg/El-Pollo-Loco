@@ -1,4 +1,4 @@
-class MovableObject extends DrawableObject{
+class MovableObject extends DrawableObject {
     speed = 0.15;
     otherDirection = false;
     speedY = 1;
@@ -9,6 +9,8 @@ class MovableObject extends DrawableObject{
     isBoss = false;
     isAlive = true;
 
+    intervals = []; // Initialisiere das intervals Array
+
     offset = {
         top: 0,
         left: 0,
@@ -16,41 +18,24 @@ class MovableObject extends DrawableObject{
         bottom: 0
     }
 
-    // applyGravity(){
-    //     setInterval(() => {
-    //         if (this.isAboveGround() || this.speedY > 0) {
-    //             this.y -= this.speedY;
-    //             this.speedY -= this.acceleration;
-    //         }
-    //     }, 1000 / 25);
-    // }
-
     applyGravity() {
-        setInterval(() => {
+        addInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;
             } else {
                 this.speedY = 0;  // Sicherstellen, dass die Geschwindigkeit null ist, wenn der Charakter auf dem Boden ist
             }
-        }, 1000 / 25);
+        }, 1000 / 25, this);
     }
 
-    isAboveGround(){
+    isAboveGround() {
         if (this instanceof ThrowableObject) { // Throwable object should always fall
             return true;
         } else {
-        return this.y < 180;
+            return this.y < 180;
         }
     }
-
-    
-    // isColliding(mo) {
-    //     return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
-    //     this.y + this.height - this.offset.bottom > mo.y + mo.offset.top &&
-    //     this.x + this.offset.left < mo.x + mo.width - mo.offset.right&&
-    //     this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
-    // }
 
     isColliding(mo) {
         return this.x + this.width - this.offset.right > mo.x + mo.offset.left &&
@@ -58,7 +43,6 @@ class MovableObject extends DrawableObject{
                this.x + this.offset.left < mo.x + mo.width - mo.offset.right &&
                this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom;
     }
-
 
     isCollidingFromAbove(mo) {
         if (mo.isBoss) {
@@ -70,7 +54,6 @@ class MovableObject extends DrawableObject{
     
         return characterBottom < enemyBottom && this.speedY < 0;  // Charakter fällt nach unten, Charakter ist über dem Feind
     }
-    
 
     hit() {
         this.health -= 1;
@@ -110,11 +93,10 @@ class MovableObject extends DrawableObject{
         this.speedY = 30;
     }
 
-
-
     stopIntervals() {
         this.intervals.forEach(clearInterval);
         this.intervals = [];
     }
 }
+
 

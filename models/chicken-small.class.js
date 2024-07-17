@@ -20,8 +20,6 @@ class ChickenSmall extends MovableObject {
         'img/3_enemies_chicken/chicken_small/2_dead/dead.png'
     ]
 
-    intervals = [];
-
     death_sound = new Audio('audio/small_chicken_death.mp3');
 
     constructor() {
@@ -35,19 +33,15 @@ class ChickenSmall extends MovableObject {
         this.animate();
     }
 
+    
     animate() {
-        this.intervals.push(setInterval(() => {
+        addInterval(() => {
             this.moveLeft();
-        }, 1000 / 60));
+        }, 1000 / 60, this);
 
-        this.intervals.push(setInterval(() => {
+        addInterval(() => {
             this.playAnimation(this.IMAGES_WALKING);
-        }, 200));
-
-        // Hier fügen wir das Interval hinzu, um die jump-Funktion alle 2 Sekunden aufzurufen
-        // this.intervals.push(setInterval(() => {
-        //     this.jump();
-        // }, 2000));
+        }, 200, this);
     }
 
     // stopIntervals() {

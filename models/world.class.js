@@ -49,7 +49,7 @@ class World {
     }
 
     run() {
-        setInterval(() => {
+        addInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
             this.checkEndbossChasing();  // Neue Methode zur Überprüfung der Verfolgung
@@ -174,40 +174,6 @@ class World {
             }
         }, 500);
     }
-
-
-    // checkCollisions() {
-    //     this.level.enemies.forEach( (enemy) => {
-    //         if(this.character.isColliding(enemy) ) {
-    //              this.character.hit();
-    //              this.healthStatusBar.setPercentage(this.character.health);
-    //              console.log(this.character.health);
-    //         }
-    //      });
-
-        //  this.level.bottles.forEach( (bottle) => {
-        //     if(this.character.isColliding(bottle) ) {
-        //          this.collectBottle(bottle);
-        //     }
-        //  });
-
-        //  this.level.coins.forEach( (coin) => {
-        //     if(this.character.isColliding(coin) ) {
-        //          this.collectCoin(coin);
-        //     }
-        //  });
-    // }
-    
-
-    // checkThrowObjects() {
-    //     if (this.keyboard.D && this.character.bottles > 0) { // checks if character has min. 1 bottle
-    //         const direction = this.character.otherDirection ? 'left' : 'right'; 
-    //         let bottle = new ThrowableObject(this.character.x + (direction === 'right' ? 100 : -100), this.character.y + 100, direction);
-    //         this.throwableObjects.push(bottle);
-    //         this.character.bottles -= 1; // Removes a bottle after throwing
-    //         this.bottlesStatusBar.setPercentage(this.character.bottles * 20); // Update BottlesStatusbar
-    //     }
-    // }
 
     checkThrowObjects() {
         const currentTime = Date.now();

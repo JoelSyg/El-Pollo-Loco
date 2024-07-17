@@ -78,7 +78,7 @@ class Endboss extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
+        addInterval(() => {
             if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
             } else if (this.isHurt) {
@@ -92,7 +92,7 @@ class Endboss extends MovableObject {
             }
         }, 200);
 
-        setInterval(() => {
+        addInterval(() => {
             this.checkCharacterPosition();
         }, 1000 / 60);
     }

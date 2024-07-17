@@ -40,13 +40,13 @@ class ThrowableObject extends MovableObject {
         this.speedY = 20;
         this.applyGravity();
         const speedX = this.direction === 'left' ? -10 : 10; // Adjust speedX based on direction
-        this.moveInterval = setInterval(() => {
+        this.moveInterval = addInterval(() => {
             this.x += speedX;
         }, 25);
     }
 
     animate(path, time){
-        this.animateInterval = setInterval(() => {
+        this.animateInterval = addInterval(() => {
             this.playAnimation(path);
         }, time);
     }

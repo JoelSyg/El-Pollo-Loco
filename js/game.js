@@ -1,6 +1,22 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let intervalIds = [];
+
+/* Zentrale Verwaltung von Intervallen */
+function addInterval(fn, time, object) {
+    let id = setInterval(fn, time);
+    intervalIds.push(id);
+    if (object && object.intervals) {
+        object.intervals.push(id);
+    }
+    return id;
+}
+
+function clearAllIntervals() {
+    intervalIds.forEach(clearInterval);
+    intervalIds = [];
+}
 
 /* Initialisierungsfunktion */
 function init() {
@@ -24,6 +40,17 @@ function startGame() {
     world = new World(canvas, keyboard); // Spielwelt erstellen
     console.log('my character is', world.character);
 }
+
+/* Funktion zum Stoppen des Spiels */
+function stopGame() {
+    clearAllIntervals();
+    if (world && world.character) {
+        world.character.stopIntervals();
+    }
+    // Füge hier ähnliche Aufrufe für andere Spielobjekte hinzu, falls nötig
+}
+
+
 
 /* Event-Listener für Tastaturereignisse */
 window.addEventListener('keydown', (e) => {
