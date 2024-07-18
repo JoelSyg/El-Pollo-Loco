@@ -113,6 +113,7 @@ checkEnemyCollisions() {
                 this.healthStatusBar.setPercentage(this.character.health);
                 if (this.character.isDead()) {
                     this.muteAllMusic();
+                    this.character.walking_sound.volume = 0;
                     gameOver(false);
                 }
             }
@@ -168,6 +169,7 @@ checkThrownBottleCollisionsWithEnemies(thrownBottle) {
                 this.bossHealthStatusBar.setPercentage(enemy.health);
                 if (enemy.isDead()) {
                     this.muteAllMusic();
+                    this.character.walking_sound.volume = 0;
                     gameOver(true);
                 }
             }
