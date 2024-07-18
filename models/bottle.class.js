@@ -12,11 +12,11 @@ class Bottle extends MovableObject {
     }
 
     BOTTLE_ON_GROUND = [
-        'img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
-        'img/6_salsa_bottle/2_salsa_bottle_on_ground.png'
+        './img/6_salsa_bottle/1_salsa_bottle_on_ground.png',
+        './img/6_salsa_bottle/2_salsa_bottle_on_ground.png'
     ]
 
-    pickup_sound = new Audio ('audio/item_pickup.ogg');
+    pickup_sound = new Audio ('./audio/item_pickup.ogg');
 
     constructor() {
         super();

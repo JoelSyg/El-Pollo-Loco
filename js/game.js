@@ -3,8 +3,8 @@ let world;
 let keyboard = new Keyboard();
 let intervalIds = [];
 
-victory_sound = new Audio('audio/victory.mp3')
-game_over_sound = new Audio('audio/game_over.wav')
+victory_sound = new Audio('./audio/victory.mp3')
+game_over_sound = new Audio('./audio/game_over.wav')
 
 /* Zentrale Verwaltung von Intervallen */
 function addInterval(fn, time, object) {

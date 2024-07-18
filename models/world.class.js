@@ -12,8 +12,8 @@ class World {
   throwableObjects = [];
   lastThrowTime = 0; // Initialize last throw time
 
-  gameMusic = new Audio("audio/music.mp3");
-  endbossMusic = new Audio("audio/endboss_music.wav");
+  gameMusic = new Audio("./audio/music.mp3");
+  endbossMusic = new Audio("./audio/endboss_music.wav");
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
