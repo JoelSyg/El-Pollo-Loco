@@ -39,6 +39,28 @@
 
     <div id="gameContainer">
       <canvas id="canvas" width="720" height="480" style="display: none"></canvas>
+
+        <img id="soundIcon" onclick="toggleSoundMenu()" src="./img/11_menu/settings_icon.png" alt="">
+
+      <div class="sound-menu">
+        <div>
+          Fullscreen
+          <img onclick="toggleFullscreen()" id="fullscreen-switch" src="./img/11_menu/switch_off.png" alt="Sound Switch">
+        </div>
+        <div>
+          Sounds
+          <img onclick="toggleSound()" id="sound-switch" src="./img/11_menu/switch_on.png" alt="Sound Switch">
+        </div>
+        <div>
+          Music
+          <img onclick="toggleMusic()" id="music-switch" src="./img/11_menu/switch_on.png" alt="Music Switch">
+        </div>
+        <img class="close-icon" onclick="toggleSoundMenu()" src="./img/11_menu/close_icon.png" alt="">
+    </div>
+    
+  
+
+
       <div id="controlDiv"><span>Arrows Left/Right = Walk</span><span>Arrow Up = Jump</span><span>D = Throw Salsa</span></div>
       <div id="bottomPanel" class="mobile-controls hidden">
         <button id="btnLeft" class="control-button">
@@ -56,12 +78,18 @@
       </div>
       <div id="gameOverScreen" class="hidden">
         <img id="gameOverImage" src="" alt="Game Over" />
+        <button id="backToMenuButton" onclick="location.reload()">Back to Menu</button>
       </div>
     </div>
+
 
     <div id="orientationWarning" class="hidden">
       <h2>Please turn your device to play</h2>
       <img src="./img/2_character_pepe/1_idle/idle/I-1.png" alt="Character Pepe" />
     </div>
+    <footer>
+      <a href="legal-notice.html">legal notice</a>
+      <a href="legal-notice.html#privacyPolicy">privacy policy</a>
+    </footer>
   </body>
 </html>

@@ -33,5 +33,9 @@ class Coin extends MovableObject {
         }, 200);
     }
 
+    updateSoundVolumes(isMuted) {
+        this.collect_sound.volume = isMuted ? 0 : 1;
+    }
+    
 }
 

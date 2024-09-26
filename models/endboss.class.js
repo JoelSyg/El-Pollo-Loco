@@ -129,11 +129,11 @@ class Endboss extends MovableObject {
 
     goToAlertState() {
         this.isAlert = true;
-        this.speed = 14;
+        this.speed = Math.floor(Math.random() * 9) + 6;
         setTimeout(() => {
             this.isAlert = false;
             this.speed = this.originalSpeed;
-        }, 550);
+        }, Math.floor(Math.random() * 401) + 200);
     }
 
     attack() {
@@ -188,6 +188,13 @@ class Endboss extends MovableObject {
                 this.moveRight();
             }
         }
+    }
+    
+    updateSoundVolumes(isMuted) {
+        const volume = isMuted ? 0 : 1;
+        this.hurt_sound.volume = volume;
+        this.sound.volume = volume;
+        this.death_sound.volume = volume;
     }
     
 }

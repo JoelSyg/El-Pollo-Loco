@@ -29,4 +29,8 @@ class Bottle extends MovableObject {
         return this.BOTTLE_ON_GROUND[randomIndex];
     }
 
+    updateSoundVolumes(isMuted) {
+        this.pickup_sound.volume = isMuted ? 0 : 1;
+    }
+    
 }

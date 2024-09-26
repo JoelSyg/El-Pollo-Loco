@@ -13,7 +13,7 @@ class BossHealthStatusBar extends StatusBar {
     constructor() {
         super();
         this.loadImages(this.IMAGES);
-        this.x = 500;
+        this.x = 452;
         this.y = 5;
         this.width = 200;
         this.height = 55;

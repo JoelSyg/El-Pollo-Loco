@@ -11,6 +11,8 @@ class World {
   bossHealthStatusBar = new BossHealthStatusBar();
   throwableObjects = [];
   lastThrowTime = 0; // Initialize last throw time
+  isMusicMuted = false;
+  isSoundMuted = false;
 
   gameMusic = new Audio("./audio/music.mp3");
   endbossMusic = new Audio("./audio/endboss_music.wav");
@@ -148,39 +150,125 @@ checkThrowableObjectsCollisions() {
 }
 
 handleBottleHitGround(thrownBottle) {
-    thrownBottle.bottleSplash();
-    thrownBottle.break_sound.play();
-    thrownBottle.hasHit = true;
-    this.removeThrownBottle(thrownBottle);
+  thrownBottle.bottleSplash();
+  if (!this.isSoundMuted) {
+    thrownBottle.break_sound.play(); // Nur abspielen, wenn nicht gemutet
+  }
+  thrownBottle.hasHit = true;
+  this.removeThrownBottle(thrownBottle);
 }
 
+
 checkThrownBottleCollisionsWithEnemies(thrownBottle) {
-    this.level.enemies.forEach((enemy) => {
-        if (!thrownBottle.hasHit && thrownBottle.isColliding(enemy)) {
-            enemy.hitByBottle();
-            thrownBottle.bottleSplash();
-            thrownBottle.splash_sound.play();
-            thrownBottle.hasHit = true;
-            this.removeThrownBottle(thrownBottle);
-            if (!enemy.isAlive) {
-                this.removeDeadEnemy(enemy);
-            }
-            if (enemy instanceof Endboss) {
-                this.bossHealthStatusBar.setPercentage(enemy.health);
-                if (enemy.isDead()) {
-                    this.muteAllMusic();
-                    this.character.walking_sound.volume = 0;
-                    gameOver(true);
-                }
-            }
-        }
-    });
+  this.level.enemies.forEach((enemy) => {
+      if (!thrownBottle.hasHit && thrownBottle.isColliding(enemy)) {
+          enemy.hitByBottle();
+          thrownBottle.bottleSplash();
+          if (!this.isSoundMuted) {
+            thrownBottle.splash_sound.play(); // Nur abspielen, wenn nicht gemutet
+          }
+          thrownBottle.hasHit = true;
+          this.removeThrownBottle(thrownBottle);
+          if (!enemy.isAlive) {
+              this.removeDeadEnemy(enemy);
+          }
+          if (enemy instanceof Endboss) {
+              this.bossHealthStatusBar.setPercentage(enemy.health);
+              if (enemy.isDead()) {
+                  this.muteAllMusic();
+                  this.character.walking_sound.volume = 0;
+                  gameOver(true);
+              }
+          }
+      }
+  });
 }
+
 
 muteAllMusic() {
     this.gameMusic.volume = 0; // Mute game music
     this.endbossMusic.volume = 0; // Mute Endboss music
 }
+
+
+
+
+
+
+  toggleMusicMute() {
+      if (this.isMusicMuted) {
+          this.isMusicMuted = false;
+          this.gameMusic.volume = 1;
+          this.endbossMusic.volume = 1;
+      } else {
+          this.isMusicMuted = true;
+          this.gameMusic.volume = 0;
+          this.endbossMusic.volume = 0;
+      }
+  }
+
+  toggleSoundMute() {
+      if (this.isSoundMuted) {
+          this.isSoundMuted = false;
+      } else {
+          this.isSoundMuted = true;
+      }
+
+      // Charakter-Sounds muten
+      if (this.character) {
+          this.character.updateSoundVolumes(this.isSoundMuted);
+      }
+
+      // Feinde (inkl. Hühner und Endboss) muten
+      if (this.level.enemies) {
+          this.level.enemies.forEach(enemy => {
+              if (enemy.updateSoundVolumes) {
+                  enemy.updateSoundVolumes(this.isSoundMuted);
+              }
+          });
+      }
+
+      // Flaschen-Sounds muten
+      if (this.level.bottles) {
+          this.level.bottles.forEach(bottle => {
+              if (bottle.updateSoundVolumes) {
+                  bottle.updateSoundVolumes(this.isSoundMuted);
+              }
+          });
+      }
+
+      // Münzen-Sounds muten
+      if (this.level.coins) {
+          this.level.coins.forEach(coin => {
+              if (coin.updateSoundVolumes) {
+                  coin.updateSoundVolumes(this.isSoundMuted);
+              }
+          });
+      }
+
+      // Geworfene Flaschen-Sounds muten
+      if (this.throwableObjects) {
+          this.throwableObjects.forEach(thrownBottle => {
+              if (thrownBottle.updateSoundVolumes) {
+                  thrownBottle.updateSoundVolumes(this.isSoundMuted);
+              }
+          });
+      }
+
+      // Endboss-Sounds muten
+      if (this.endboss) {
+          this.endboss.updateSoundVolumes(this.isSoundMuted);
+      }
+  }
+
+
+
+
+
+
+
+
+
 
 
   removeThrownBottle(thrownBottle) {
@@ -204,15 +292,27 @@ muteAllMusic() {
   checkThrowObjects() {
     const currentTime = Date.now();
     if (this.keyboard.D && this.character.bottles > 0 && currentTime - this.lastThrowTime >= 500) {
-      // checks if character has min. 1 bottle and 300 ms have passed
       const direction = this.character.otherDirection ? "left" : "right";
       let bottle = new ThrowableObject(this.character.x + (direction === "right" ? 100 : -100), this.character.y + 100, direction);
+      
+      // Rufe die Methode zum Abspielen des Sounds auf
+      this.playThrowSound();
+
       this.throwableObjects.push(bottle);
-      this.character.bottles -= 1; // Removes a bottle after throwing
-      this.bottlesStatusBar.setPercentage(this.character.bottles * 20); // Update BottlesStatusbar
-      this.lastThrowTime = currentTime; // Update the last throw time
+      this.character.bottles -= 1;
+      this.bottlesStatusBar.setPercentage(this.character.bottles * 20);
+      this.lastThrowTime = currentTime;
     }
+}
+
+playThrowSound() {
+  if (!this.isSoundMuted) {
+      const throwSound = new Audio('./audio/throw.mp3');
+      throwSound.play();
   }
+}
+
+
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);

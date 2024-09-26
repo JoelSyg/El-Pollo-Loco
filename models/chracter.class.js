@@ -121,29 +121,58 @@ class Character extends MovableObject {
 }
 
 handleWalking() {
-    this.walking_sound.pause();
-    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-        this.moveRight();
-        this.playWalkSound();
-        this.otherDirection = false;
-        this.resetIdleTimer();
-    }
+  if (!this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
+      // Pausiere den Sound nur, wenn keine Richtungstaste gedrückt ist und der Sound noch läuft
+      if (this.isSoundPlaying(this.walking_sound)) {
+          this.walking_sound.pause();
+      }
+  }
 
-    if (this.world.keyboard.LEFT && this.x > 0) {
-        this.moveLeft();
-        this.playWalkSound();
-        this.otherDirection = true;
-        this.resetIdleTimer();
-    }
+  if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+      this.moveRight();
+      this.playWalkSound();
+      this.otherDirection = false;
+      this.resetIdleTimer();
+  }
 
-    if (this.world.keyboard.UP && !this.isAboveGround()) {
-        this.jump();
-        this.resetIdleTimer();
-        this.playJumpSound();
-    }
+  if (this.world.keyboard.LEFT && this.x > 0) {
+      this.moveLeft();
+      this.playWalkSound();
+      this.otherDirection = true;
+      this.resetIdleTimer();
+  }
 
-    this.world.camera_x = -this.x + 240;
+  if (this.world.keyboard.UP && !this.isAboveGround()) {
+      this.jump();
+      this.resetIdleTimer();
+      this.playJumpSound();
+  }
+
+  this.world.camera_x = -this.x + 240;
 }
+
+playWalkSound() {
+  // Spiele den Sound nur ab, wenn er nicht bereits läuft und der Charakter auf dem Boden ist
+  if (!this.isSoundPlaying(this.walking_sound) && this.y > 180) {
+      let playPromise = this.walking_sound.play();
+
+      if (playPromise !== undefined) {
+          playPromise
+          .then(() => {
+              // Sound started playing successfully
+          })
+          .catch((error) => {
+              console.log("Sound could not be played: ", error);
+          });
+      }
+  }
+}
+
+isSoundPlaying(sound) {
+  // Überprüfe, ob der Sound aktuell abgespielt wird
+  return !sound.paused && sound.currentTime > 0;
+}
+
 
 handleAction() {
     if (this.isDead()) {
@@ -222,4 +251,18 @@ handleIdleOrWalkingAnimation() {
       this.landing_sound.play();
     }, 900);
   }
+
+  updateSoundVolumes(isMuted) {
+    const volume = isMuted ? 0 : 1;
+
+    this.walking_sound.volume = volume;
+    this.death_sound.volume = volume;
+    this.jump_sound.volume = volume;
+    this.landing_sound.volume = volume;
+
+    this.pepe_hurt_sounds.forEach(sound => {
+      sound.volume = volume;
+    });
+  }
+
 }

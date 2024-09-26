@@ -53,6 +53,10 @@ class Chicken extends MovableObject {
     hitByBottle() {
         this.kill();
     }
+
+    updateSoundVolumes(isMuted) {
+        this.death_sound.volume = isMuted ? 0 : 1;
+    }
 }
 
 

@@ -17,7 +17,6 @@ class ThrowableObject extends MovableObject {
     ]
 
     break_sound = new Audio ('./audio/break.mp3')
-    throw_sound = new Audio ('./audio/throw.mp3')
     splash_sound = new Audio ('./audio/splash.mp3')
 
     constructor(x, y, direction) {
@@ -36,7 +35,6 @@ class ThrowableObject extends MovableObject {
     }
     
     throw() {
-        this.throw_sound.play();
         this.speedY = 20;
         this.applyGravity();
         const speedX = this.direction === 'left' ? -10 : 10; // Adjust speedX based on direction
