@@ -1,0 +1,121 @@
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+    margin: 0;
+    font-family: 'Overpass', sans-serif;
+    background: linear-gradient(to bottom, #3C76E1, #30ABCF, #FFB959, #CD8753);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+section {
+    max-width: 1600px;
+    padding: 64px 100px 24px 100px;
+    color: black;
+    font-family: 'Overpass', sans-serif;
+}
+
+@media (max-width: 1380px) {
+    section {
+        padding: 24px 60px 24px 60px;
+    }
+}
+
+@media (max-width: 720px) {
+    section {
+        padding: 24px 25px 24px 25px;
+    }
+}
+
+@media (max-width: 380px) {
+    section {
+        padding: 24px 18px 24px 18px;
+    }
+}
+
+a {
+    all: unset;
+}
+
+h2 {
+    font-size: 46px;
+}
+
+h3 {
+    font-size: 28px;
+}
+
+.back-icon {
+    height: 48px;
+    cursor: pointer;
+    transition: transform 0.1s ease, color 0.1s ease, opacity 0.1s ease;
+    opacity: 0.9;
+}
+ 
+  .back-icon:hover {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+
+#privacyPolicy {
+    padding-top: 32px;
+}
+
+.scroll-to-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    height: 60px;
+    z-index: 100;
+    overflow: hidden;
+    transition: height 0.2s ease;
+    cursor: pointer;
+    display: none;
+}
+
+.scroll-to-top:hover {
+    height: 78px;
+}
+
+@media (max-width: 900px) {
+    .scroll-to-top {
+        display: none !important;
+    }
+}
+
+
+ @font-face {
+    font-display: swap;
+    font-family: 'Overpass';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./fonts/overpass-v13-latin-regular.woff2') format('woff2');
+  }
+  /* overpass-600 - latin */
+  @font-face {
+    font-display: swap; 
+    font-family: 'Overpass';
+    font-style: normal;
+    font-weight: 600;
+    src: url('./fonts/overpass-v13-latin-600.woff2') format('woff2');
+  }
+  /* overpass-700 - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Overpass';
+    font-style: normal;
+    font-weight: 700;
+    src: url('./fonts/overpass-v13-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+  /* overpass-800 - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Overpass';
+    font-style: normal;
+    font-weight: 800;
+    src: url('./fonts/overpass-v13-latin-800.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
